@@ -19,6 +19,18 @@ namespace CoffeApp.Services
             return _productRepository.FindAll();
         }
 
+        public Product? FindProductById(int id)
+        {
+            var product = _productRepository.FindById(id);
+
+            if(product != null)
+            {
+                return product;
+            }
+            return null;
+
+		}
+
         public List<Product> FindProductByName(string name)
         {
             return _productRepository.FindByName(name);
