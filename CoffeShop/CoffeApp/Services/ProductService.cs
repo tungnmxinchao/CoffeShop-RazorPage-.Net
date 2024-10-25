@@ -28,5 +28,28 @@ namespace CoffeApp.Services
         {
             return _productRepository.SearchByNameAndCategory(name, categoryId);
         }
+
+        public bool AddProduct(Product product)
+        {
+            if(product == null)
+            {
+				throw new Exception("Product not fount!");
+
+			}
+            return _productRepository.AddProduct(product);
+           
+        }
+
+        public bool UpdateProduct(Product product)
+        {
+            if(product == null)
+            {
+                throw new Exception("Product not found!");
+            }
+
+            return _productRepository.UpdateProduct(product);
+        }
+
+
     }
 }
