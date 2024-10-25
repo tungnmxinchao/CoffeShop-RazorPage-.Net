@@ -1,0 +1,118 @@
+﻿@page
+@model CoffeApp.Pages.Guest.TrackingOrderStatusModel
+@{
+}
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="shortcut icon" href="img/fav.png">
+	<meta charset="UTF-8">
+	<title>Tracking Order</title>
+	<link rel="stylesheet" href="~/theme/css/bootstrap.css">
+	<link rel="stylesheet" href="~/theme/css/main.css">
+</head>
+<body>
+	@await Html.PartialAsync("Shared/Header")
+	<!-- Phần Banner -->
+	@await Html.PartialAsync("Shared/Banner")
+
+	<section class="tracking-area section-gap">
+		<div class="container">
+			<h2 class="text-center mb-4">Track Your Order Status</h2>
+
+			<!-- Phone Number Form -->
+			<form method="post" asp-page-handler="SearchOrders" class="form-inline justify-content-center mb-4">
+				<div class="form-group">
+					<label for="phoneNumber" class="sr-only">Phone Number</label>
+					<input type="text" class="form-control" asp-for="@Model.PhoneNumber" id="phoneNumber" placeholder="Enter Phone Number" required />
+				</div>
+				<button type="submit" class="btn btn-primary mx-2">Search</button>
+			</form>
+
+			<!-- Display Orders List -->
+			@if (Model.ListOrder != null && Model.ListOrder.Count > 0)
+			{
+				<h3 class="text-center mb-4">Order List</h3>
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Order ID</th>
+							<th>Order Date</th>
+							<th>Total Amount</th>
+							<th>Status</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach (var order in Model.ListOrder)
+						{
+							<tr>
+								<td>@order.OrderId</td>
+								<td>@order.OrderDate?.ToString("dd-MM-yyyy")</td>
+								<td>@order.TotalAmount.ToString("C")</td>
+								<td>@order.Status</td>
+								<td>
+									<form method="post" asp-page-handler="Order">
+										<input type="hidden" asp-for="@Model.PhoneNumber" />
+										<input type="hidden" name="OrderId" value="@order.OrderId" />
+										<button type="submit" class="btn btn-info">View Details</button>
+									</form>
+								</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			}
+			else if (Model.ListOrder == null)
+			{
+				<p class="text-center text-muted">Please enter a phone number to search for orders.</p>
+			}
+			else
+			{
+				<p class="text-center text-muted">No orders found for this phone number.</p>
+			}
+
+			<!-- Display Order Details if available -->
+			@if (Model.OrderDetails != null && Model.OrderDetails.Count > 0)
+			{
+				<h3 class="text-center mt-5 mb-4">Order Details</h3>
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Product Name</th>
+							<th>Price</th>
+							<th>Quantity</th>
+							<th>Total</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach (var detail in Model.OrderDetails)
+						{
+							var product = detail.Product;
+							<tr>
+								<td>@product.Name</td>
+								<td>@product.Price.ToString("C")</td>
+								<td>@detail.Quantity</td>
+								<td>@(detail.Price.ToString("C"))</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			}
+		</div>
+	</section>
+
+
+	<!-- End Cart Area -->
+	<!-- Phần Footer -->
+	@await Html.PartialAsync("Shared/footer")
+
+	<script src="~/theme/js/vendor/jquery-2.2.4.min.js"></script>
+	<script src="~/theme/js/vendor/bootstrap.min.js"></script>
+	<script src="~/theme/js/main.js"></script>
+
+</body>
+</html>
+
+
