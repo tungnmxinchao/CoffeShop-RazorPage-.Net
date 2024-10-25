@@ -1,5 +1,6 @@
 using CoffeApp;
 using CoffeApp.Interfaces;
+using CoffeApp.Mapper;
 using CoffeApp.Models;
 using CoffeApp.Repositories;
 using CoffeApp.Services;
@@ -33,6 +34,8 @@ builder.Services.AddScoped<CategoryService>();
 builder.Services.AddScoped<CartService>();
 builder.Services.AddScoped<OrderService>();
 builder.Services.AddScoped<OrderDetailsService>();
+builder.Services.AddScoped<ProductMapper>();
+builder.Services.AddSingleton(sp => sp.GetRequiredService<IWebHostEnvironment>());
 
 
 var app = builder.Build();
